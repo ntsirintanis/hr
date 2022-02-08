@@ -2,11 +2,11 @@
    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
    :alt: License: AGPL-3
 
-===========================
-Agreement Employee Contract
-===========================
+====================
+HR Employee Contract
+====================
 
-Select an agreement for employee contract
+Select a report for employee contract
 
 Installation
 ============

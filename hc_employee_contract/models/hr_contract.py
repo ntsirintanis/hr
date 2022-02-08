@@ -6,15 +6,15 @@ from odoo.tools import safe_eval
 class Contract(models.Model):
     _inherit = "hr.contract"
 
-    agreement_ids = fields.One2many("agreement", "contract_id")
+    report_ids = fields.One2many("report.dynamic", "contract_id")
 
-    def action_create_agreement(self):
+    def action_create_report(self):
         self.ensure_one()
         # search for agreement templates
-        templates = self.env["agreement"].search(
+        templates = self.env["report.dynamic"].search(
             [("model_id.model", "=", self._name), ("is_template", "=", True)]
         )
-        eligible_template = self.env["agreement"]
+        eligible_template = self.env["report.dynamic"]
         for template in templates:
             # Check the template global domain
             if not self._check_template(template):
@@ -24,26 +24,27 @@ class Contract(models.Model):
             raise UserError(_("No matching templates found"))
         if len(eligible_template) > 1:
             raise UserError(_("More templates than one found"))
-        agreement = eligible_template.copy()
+        report = eligible_template.copy()
         # Transform this into an agreement,
         # tailor made for this contract
-        agreement.write(
+        report.write(
             {
                 "is_template": False,
                 "res_id": self.id,
                 "contract_id": self.id,
-                "partner_id": self.employee_id.user_partner_id.id,
+                "resource_ref": self,
                 "template_id": eligible_template.id,
+                "name": "Report for {}".format(self.employee_id.name),
             }
         )
         return {
-            "name": _("Agreement"),
+            "name": _("Report"),
             "view_mode": "form",
-            "res_model": "agreement",
+            "res_model": "report.dynamic",
             "type": "ir.actions.act_window",
             # new, because we want to save the form
             "target": "new",
-            "res_id": agreement.id,
+            "res_id": report.id,
         }
 
     def _check_template(self, template):

@@ -7,18 +7,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='job_id']" position="after">
                 <button
-                    name="action_create_agreement"
-                    string="Create Agreement"
+                    name="action_create_report"
+                    string="Create Report"
                     type="object"
                     class="oe_highlight"
                 />
             </xpath>
             <xpath expr="//page[@name='information']" position="after">
-                <page string="Agreements" name="agreements">
-                    <field name="agreement_ids">
+                <page string="Reports" name="report">
+                    <field name="report_ids">
                         <tree create="false">
                             <field name="name" />
-                            <field name="signature_date" />
+                            <field name="lock_date" />
                         </tree>
                     </field>
                 </page>
